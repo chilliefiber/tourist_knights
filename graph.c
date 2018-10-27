@@ -1,6 +1,6 @@
 #include "graph.h"
 #include "pointers.h"
-
+#include <stdio.h>
 int isValidPoint(unsigned int _row, unsigned int _column, 
                  unsigned int _height, unsigned int _width,
                  unsigned int **map){
@@ -10,33 +10,36 @@ int isValidPoint(unsigned int _row, unsigned int _column,
   return 1;
 }
 
-unsigned int updateCost(unsigned int _row, unsigned int _column, 
+void updateCost(unsigned int _row, unsigned int _column, 
                         unsigned int _width, unsigned int _height,
-                        unsigned int ** map, unsigned int **result,
-                        unsigned int _cost){
+                        unsigned int **map, unsigned int *cost){
   if (isValidPoint(_row, _column, _height, _width, map) &&
-      (_cost == 0 || map[_row][_column] < _cost)){
-    (*result)[0] = _row;
-    (*result[1]) = _column;
-    return map[_row][_column];
-  }
-  return 0;
+      (*cost == 0 || map[_row][_column] < *cost))
+    *cost = map[_row][_column];
 }
 
 // devolve NULL se não houver nenhum ponto
-unsigned int *findLowestCost(unsigned int *origin, unsigned int **map, 
+unsigned int findLowestCost(unsigned int *origin, unsigned int **map, 
                              unsigned int _height, unsigned int _width){
+  // verificar se o ponto está no mapa
+  if (!isValidPoint(origin[0], origin[1], _height, _width, map))
+    return 0;
   unsigned int cost = 0;
-  unsigned int *result = safeMalloc(sizeof(unsigned int) * 2);
-  cost = updateCost(origin[0] + 3, origin[1] + 1, _width, _height, 
-                    map, &result, cost);
-  cost = updateCost(origin[0] + 3, origin[1] - 1, _width, _height, 
-                    map, &result, cost);
-  cost = updateCost(origin[0] + 1, origin[1] + 3, _width, _height, 
-                    map, &result, cost);
-  cost = updateCost(origin[0] + 1, origin[1] - 3, _width, _height, 
-                    map, &result, cost);
-   
-  
-  cost = updateC
-    
+  updateCost(origin[0] + 2, origin[1] + 1, _width, _height, 
+             map, &cost);
+  updateCost(origin[0] + 2, origin[1] - 1, _width, _height, 
+             map, &cost);
+  updateCost(origin[0] + 1, origin[1] + 2, _width, _height, 
+             map, &cost);
+  updateCost(origin[0] + 1, origin[1] - 2, _width, _height,
+             map, &cost); 
+  updateCost(origin[0] - 2, origin[1] + 1, _width, _height,
+             map, &cost);
+  updateCost(origin[0] - 2, origin[1] - 1, _width, _height,
+             map, &cost);
+  updateCost(origin[0] - 1, origin[1] - 2, _width, _height,
+             map, &cost);   
+  updateCost(origin[0] - 1, origin[1] + 2, _width, _height,
+             map, &cost);
+  return cost;
+}
