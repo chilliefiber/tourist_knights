@@ -27,7 +27,7 @@ int main(int argc, char **argv){
     fclose(input);
     return 3;
   }
-  unsigned int width, height, num_tur_points, **map = NULL, 
+  unsigned int width, height, num_tur_points, **map = NULL,
                **tur_points = NULL;
   int not_over;
   char objective;
@@ -48,6 +48,14 @@ int main(int argc, char **argv){
     map = createMap(input, width, height);
     if (objective == 'A'){
       unsigned int answer = findLowestCost(tur_points[0], map, height, width);
+      if (!answer)
+        fprintf(output, "-1 0");
+      else
+        fprintf(output, "1 %u", answer);
+    }
+    else if(objective == 'B'){
+      unsigned int answer = checkPath(tur_points, map, height, width,
+                                       num_tur_points);
       if (!answer)
         fprintf(output, "-1 0");
       else

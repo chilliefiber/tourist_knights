@@ -21,8 +21,7 @@ void freeAll(unsigned int _num_tur_points, unsigned int ***tur_points,
   free(*tur_points);
   *tur_points = NULL;
   for (int row = 0; row < _height; row++)
-    free((*map)[row]); 
+    free((*map)[row]);
   free(*map);
   *map = NULL;
 }
-
