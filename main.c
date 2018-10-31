@@ -46,9 +46,9 @@ int main(int argc, char **argv){
       fscanf(input, "%u %u", tur_points[point_ix], tur_points[point_ix] + 1);
     }
     map = createMap(input, width, height);
-    if (objective == 'A'){
+    if (objective == 'A'){        
       unsigned int answer = findLowestCost(tur_points[0], map, height, width);
-      if (!answer)
+      if (!answer || num_tur_points != 1)
         fprintf(output, "-1 0");
       else
         fprintf(output, "1 %u", answer);
