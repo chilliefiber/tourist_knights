@@ -9,7 +9,7 @@ void *safeMalloc(size_t _size){
   void *p = malloc(_size);
   if (p == NULL){
     printf("ERRO: Falta de memória\n");
-    exit(1);
+    exit (0);
   }
   return p;
 }

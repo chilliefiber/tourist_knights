@@ -65,6 +65,7 @@ void freePath(Path *route){
     free(iter);
     iter=n_iter;
   }
+  free(iter);
   free(route);
 }
 
@@ -77,7 +78,7 @@ unsigned int checkPath(unsigned int **path, unsigned int **map,
   route->n_points=0;
   route->cost=0;
   route->init_point=NULL;
-  Point *tourist, *tourist_shadow;
+  Point *tourist=NULL, *tourist_shadow=NULL;
   unsigned int cost=0;
 
   for (int point_ix = 0; point_ix < _num_tur_points; point_ix++){
