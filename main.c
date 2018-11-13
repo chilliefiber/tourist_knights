@@ -30,6 +30,8 @@ int main(int argc, char **argv){
   unsigned int width, height, num_tur_points, **tur_points = NULL;
   unsigned char **map = NULL;
   int not_over;
+  int valid_challenge;
+  unsigned int aux1, aux2;
   char objective;
   do {
     if(fscanf(input, "%u", &height)!=1)
@@ -44,13 +46,23 @@ int main(int argc, char **argv){
     fprintf(output, "%u ", width);
     fprintf(output, "%c ", objective);
     fprintf(output, "%u ", num_tur_points);
-    tur_points = safeMalloc(sizeof(unsigned int*) * num_tur_points);
+    valid_challenge = 1;
+    if (objective != 'A' && objective != 'B')
+      valid_challenge = 0;
+    if (valid_challenge)
+      tur_points = safeMalloc(sizeof(unsigned int*) * num_tur_points);
     for (int point_ix = 0; point_ix < num_tur_points; point_ix++){
-      tur_points[point_ix] = safeMalloc(sizeof(unsigned int) * 2);
-      if(fscanf(input, "%u %u", tur_points[point_ix], tur_points[point_ix] + 1)!=2)
-        exit(0);
+      if (valid_challenge){
+        tur_points[point_ix] = safeMalloc(sizeof(unsigned int) * 2);
+        if(fscanf(input, "%u %u", tur_points[point_ix], tur_points[point_ix] + 1)!=2)
+          exit(0);
+      }
+      else{
+        if(fscanf(input, "%u %u", &aux1, &aux2)!=2)
+          exit(0);
+      }
     }
-    map = createMap(input, width, height);
+    map = createMap(input, width, height, valid_challenge);
     if (objective == 'A'){
       unsigned int answer = findLowestCost(tur_points[0], map, height, width);
       if (!answer || num_tur_points != 1)
@@ -69,7 +81,8 @@ int main(int argc, char **argv){
     else
       fprintf(output, "-1 0");
     fprintf(output, "\n\n");
-    freeAll(num_tur_points, &tur_points, height, &map);
+    if (valid_challenge)
+      freeAll(num_tur_points, &tur_points, height, &map);
     not_over = 0;
     while((objective = fgetc(input)) != EOF){
       if (objective != ' '  && objective != '\n' && objective != '\r'){
