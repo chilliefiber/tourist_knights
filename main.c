@@ -27,8 +27,8 @@ int main(int argc, char **argv){
     fclose(input);
     exit (0);
   }
-  unsigned int width, height, num_tur_points, **map = NULL,
-               **tur_points = NULL;
+  unsigned int width, height, num_tur_points, **tur_points = NULL;
+  unsigned char **map = NULL;
   int not_over;
   char objective;
   do {

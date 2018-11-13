@@ -8,14 +8,13 @@ Funções relacionadas com alocação de memória
 void *safeMalloc(size_t _size){
   void *p = malloc(_size);
   if (p == NULL){
-    printf("ERRO: Falta de memória\n");
     exit (0);
   }
   return p;
 }
 
 void freeAll(unsigned int _num_tur_points, unsigned int ***tur_points,
-              unsigned int  _height, unsigned int ***map){
+              unsigned int  _height, unsigned char ***map){
   for (int point_ix = 0; point_ix < _num_tur_points; point_ix++)
     free((*tur_points)[point_ix]);
   free(*tur_points);

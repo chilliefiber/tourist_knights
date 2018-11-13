@@ -5,7 +5,7 @@
 
 int isValidPoint(unsigned int _row, unsigned int _column,
                  unsigned int _height, unsigned int _width,
-                 unsigned int **map){
+                 unsigned char **map){
   if (_row < 0 || _row >= _height || _column < 0 || _column >= _width
        || ! map[_row][_column])
     return 0;
@@ -16,23 +16,23 @@ int isReachablePoint(Point *tourist_shadow, unsigned int l,
                       unsigned int c){
   unsigned int vert=abs(tourist_shadow->l-l);
   unsigned int hori=abs(tourist_shadow->c-c);
-  if( (vert+hori)!=3 )
-    return 0;
-  if( vert==0 || hori==0 )
-      return 0;
-  return 1;
+  if( (vert+hori)==3 ){
+    if( vert!=0 && hori!=0 )
+        return 1;
+  }
+  return 0;
 }
 
 void updateCost(unsigned int _row, unsigned int _column,
                         unsigned int _width, unsigned int _height,
-                        unsigned int **map, unsigned int *cost){
+                        unsigned char **map, unsigned int *cost){
   if (isValidPoint(_row, _column, _height, _width, map) &&
       (*cost == 0 || map[_row][_column] < *cost))
     *cost = map[_row][_column];
 }
 
 // devolve NULL se não houver nenhum ponto
-unsigned int findLowestCost(unsigned int *origin, unsigned int **map,
+unsigned int findLowestCost(unsigned int *origin, unsigned char **map,
                              unsigned int _height, unsigned int _width){
   // verificar se o poninvalidoto está no mapa
   if (!isValidPoint(origin[0], origin[1], _height, _width, map))
@@ -69,7 +69,7 @@ void freePath(Path *route){
   free(route);
 }
 
-unsigned int checkPath(unsigned int **path, unsigned int **map,
+unsigned int checkPath(unsigned int **path, unsigned char **map,
                         unsigned int _height, unsigned int _width,
                         unsigned int _num_tur_points){
   if (!isValidPoint(path[0][0], path[0][1], _height, _width, map))
