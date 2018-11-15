@@ -71,7 +71,7 @@ int main(int argc, char **argv){
         fprintf(output, "1 %u", answer);
     }
     else if(objective == 'B'){
-      unsigned int answer = checkPath(tur_points, map, height, width,
+      unsigned int answer = checkPathLight(tur_points, map, height, width,
                                        num_tur_points);
       if (!answer)
         fprintf(output, "-1 0");

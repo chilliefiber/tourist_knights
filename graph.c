@@ -23,6 +23,17 @@ int isReachablePoint(Point *tourist_shadow, unsigned int l,
   return 0;
 }
 
+int isReachablePointLight(unsigned int L, unsigned int C, unsigned int l,
+                      unsigned int c){
+  unsigned int vert=abs(L-l);
+  unsigned int hori=abs(C-c);
+  if( (vert+hori)==3 ){
+    if( vert!=0 && hori!=0 )
+        return 1;
+  }
+  return 0;
+}
+
 void updateCost(unsigned int _row, unsigned int _column,
                         unsigned int _width, unsigned int _height,
                         unsigned char **map, unsigned int *cost){
@@ -109,5 +120,30 @@ unsigned int checkPath(unsigned int **path, unsigned char **map,
   if(route->n_points != _num_tur_points)
     cost=0;
   freePath(route);
+  return cost;
+}
+
+unsigned int checkPathLight(unsigned int **path, unsigned char **map,
+                        unsigned int _height, unsigned int _width,
+                        unsigned int _num_tur_points){
+  unsigned int point_ix=0, cost=0;
+
+  if (!isValidPoint(path[point_ix][0], path[point_ix][1], _height,
+        _width, map))
+      return 0;
+
+  for (point_ix = 1; point_ix < _num_tur_points; point_ix++){
+    if (!isValidPoint(path[point_ix][0], path[point_ix][1], _height,
+          _width, map))
+        break;
+    if(!isReachablePointLight(path[point_ix-1][0],path[point_ix-1][1],
+                              path[point_ix][0], path[point_ix][1]))
+      break;
+    cost+= map[ path[point_ix][0] ][ path[point_ix][1] ];
+  }
+
+  if(_num_tur_points-point_ix!=0)
+    return 0;
+
   return cost;
 }
