@@ -7,6 +7,15 @@ Ficheiro com as funções associadas ao processamento dos ficheiros de input
 #include "process.h"
 #include "pointers.h"
 
+/**
+ * Allocs just enough memory for a 2D array that is fillled  with costs
+ * @param  fp              file with the map
+ * @param  _width  map numb of columns
+ * @param  _height map numb of lines
+ * @param  valid_challenge boolean that prevents the program from spending memory
+ * if the challange isn't a recognized one
+ * @return array map filled
+ */
 unsigned char **createMap(FILE *fp, int _width, int _height, int valid_challenge){
   unsigned char aux;
   unsigned char **map = NULL;

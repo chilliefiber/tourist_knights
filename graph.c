@@ -3,6 +3,15 @@
 #include "path.h"
 #include <stdlib.h>
 
+/**
+ * Check if a point is inside the map
+ * @param  _row    point y coordinate
+ * @param  _column point x coordinate
+ * @param  _height map numb of lines
+ * @param  _width  map numb of columns
+ * @param  map     2D array fulfilled with costs
+ * @return         1-valid, 0-not valid
+ */
 int isValidPoint(unsigned int _row, unsigned int _column,
                  unsigned int _height, unsigned int _width,
                  unsigned char **map){
@@ -12,6 +21,13 @@ int isValidPoint(unsigned int _row, unsigned int _column,
   return 1;
 }
 
+/**
+ * Assures the kight is moving as one
+ * @param  tourist_shadow struct storing previous point coord.
+ * @param  l              point y to be tested
+ * @param  c              point x tbt
+ * @return                1-knight move, 0-smtg else
+ */
 int isReachablePoint(Point *tourist_shadow, unsigned int l,
                       unsigned int c){
   unsigned int vert=abs(tourist_shadow->l-l);
@@ -23,6 +39,10 @@ int isReachablePoint(Point *tourist_shadow, unsigned int l,
   return 0;
 }
 
+/**
+ * Equivalent to isReachablePoin with both positions
+ * stored in arrays
+ */
 int isReachablePointLight(unsigned int L, unsigned int C, unsigned int l,
                       unsigned int c){
   unsigned int vert=abs(L-l);
@@ -34,6 +54,16 @@ int isReachablePointLight(unsigned int L, unsigned int C, unsigned int l,
   return 0;
 }
 
+/**
+ * Receiving the current lowest cost in the imediate move
+ * updates it if it's lower
+ * @param  _row    point y coordinate
+ * @param  _column point x coordinate
+ * @param  _height map numb of lines
+ * @param  _width  map numb of columns
+ * @param  map     2D array fulfilled with costs
+ * @param cost     current cost
+ */
 void updateCost(unsigned int _row, unsigned int _column,
                         unsigned int _width, unsigned int _height,
                         unsigned char **map, unsigned int *cost){
@@ -42,10 +72,21 @@ void updateCost(unsigned int _row, unsigned int _column,
     *cost = map[_row][_column];
 }
 
-// devolve NULL se não houver nenhum ponto
+/**
+ * using updateCost establishes lowest cost possible for
+ * the imediate movement
+ * @param  origin  point of departure
+ * @param  map     2D array fulfilled with costs
+ * @param  _height map numb of lines
+ * @param  _width  map numb of columns
+ * @return  cost value or NULL if no move is available
+ */
 unsigned int findLowestCost(unsigned int *origin, unsigned char **map,
                              unsigned int _height, unsigned int _width){
-  // verificar se o poninvalidoto está no mapa
+  /**
+   * Assure origin point is inside the given map
+   * @param  map     2D array fulfilled with costs
+   */
   if (!isValidPoint(origin[0], origin[1], _height, _width, map))
     return 0;
   unsigned int cost = 0;
@@ -69,6 +110,10 @@ unsigned int findLowestCost(unsigned int *origin, unsigned char **map,
 }
 
 //esta funcao deve ir para o pointers
+/**
+ * free allocated memory in structures and list of a path
+ * @param path inicial node
+ */
 void freePath(Path *route){
   Point *iter=route->init_point, *n_iter=NULL;
   while(iter->n_point!=NULL){
@@ -80,6 +125,16 @@ void freePath(Path *route){
   free(route);
 }
 
+/**
+ * Receiving a array with points coordinates test if it defiens a possi-
+ * ble path
+ * @param  path array saving the coordinates of each point of the path
+ * @param  map     2D array fulfilled with costs
+ * @param  _height map numb of lines
+ * @param  _width  map numb of columns
+ * @param  _num_tur_points number of points in the coordinates matrix
+ * @return totalcost of the path or NULL if it isn't one
+ */
 unsigned int checkPath(unsigned int **path, unsigned char **map,
                         unsigned int _height, unsigned int _width,
                         unsigned int _num_tur_points){
@@ -123,6 +178,9 @@ unsigned int checkPath(unsigned int **path, unsigned char **map,
   return cost;
 }
 
+/**
+ * Equivalent to checkPathLight implemented without using lists of structs
+ */
 unsigned int checkPathLight(unsigned int **path, unsigned char **map,
                         unsigned int _height, unsigned int _width,
                         unsigned int _num_tur_points){
